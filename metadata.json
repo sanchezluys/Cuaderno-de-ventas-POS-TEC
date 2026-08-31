@@ -1,0 +1,7 @@
+{
+  "name": "Cuaderno de Ventas",
+  "description": "Registro de ventas rápido y local para locales comerciales y vendedores.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
