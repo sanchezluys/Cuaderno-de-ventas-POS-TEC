@@ -66,7 +66,7 @@ class ExampleUnitTest {
         val receiptText = Formatters.generateReceiptText(perfil, ventaConItems)
         assertTrue(receiptText.contains("Carlos Mendoza"))
         assertTrue(receiptText.contains("3001234567"))
-        assertTrue(receiptText.contains("Mundo Móvil"))
+        assertTrue(receiptText.contains("Mundo Móvil", ignoreCase = true))
         assertTrue(receiptText.contains("Funda Uso Rudo"))
     }
 

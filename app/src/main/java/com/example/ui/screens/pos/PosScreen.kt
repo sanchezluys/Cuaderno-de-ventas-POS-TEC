@@ -113,6 +113,7 @@ import com.example.data.model.TechCategories
 import com.example.data.model.VentaConItems
 import com.example.data.util.ContactHelper
 import com.example.data.util.Formatters
+import com.example.data.util.PickPhoneContactContract
 import com.example.data.util.ReceiptImageGenerator
 import com.example.ui.viewmodel.SalesViewModel
 
@@ -609,7 +610,7 @@ fun CheckoutBottomSheet(
     var clienteTelefono by remember { mutableStateOf("") }
 
     val pickContactLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickContact()
+        contract = PickPhoneContactContract()
     ) { contactUri ->
         if (contactUri != null) {
             val contactInfo = ContactHelper.getContactDetails(context, contactUri)

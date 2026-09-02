@@ -47,6 +47,8 @@ object Formatters {
         return formatMoney(amount, activo, caracter)
     }
 
+    fun formatCurrency(amount: Double): String = formatMoney(amount)
+
     private val timeFormat = SimpleDateFormat("h:mm a", LOCALE_ES_CO)
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy", LOCALE_ES_CO)
     private val dateFullFormat = SimpleDateFormat("EEEE, d 'de' MMMM 'de' yyyy", LOCALE_ES_CO)
