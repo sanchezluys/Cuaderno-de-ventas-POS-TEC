@@ -17,19 +17,26 @@ android {
     applicationId = "com.aistudio.cuadernoventas.vkpr"
     minSdk = 24
     targetSdk = 36
-    versionCode = 2
-    versionName = "2.0"
+    versionCode = 3
+    versionName = "3.0"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
 
   signingConfigs {
     create("release") {
-      val keystorePath = System.getenv("KEYSTORE_PATH") ?: "${rootDir}/my-upload-key.jks"
-      storeFile = file(keystorePath)
-      storePassword = System.getenv("STORE_PASSWORD")
-      keyAlias = "upload"
-      keyPassword = System.getenv("KEY_PASSWORD")
+      val envKeystore = System.getenv("KEYSTORE_PATH")?.let { file(it) }
+      val defaultReleaseKeystore = file("${rootDir}/my-upload-key.jks")
+      val keystore = when {
+        envKeystore != null -> envKeystore
+        defaultReleaseKeystore.exists() -> defaultReleaseKeystore
+        else -> file("${rootDir}/debug.keystore")
+      }
+      storeFile = keystore
+      val pwd = System.getenv("STORE_PASSWORD") ?: "android"
+      storePassword = pwd
+      keyPassword = System.getenv("KEY_PASSWORD") ?: pwd
+      keyAlias = System.getenv("KEY_ALIAS") ?: if (envKeystore != null || defaultReleaseKeystore.exists()) "upload" else "androiddebugkey"
     }
     create("debugConfig") {
       storeFile = file("${rootDir}/debug.keystore")
@@ -41,8 +48,9 @@ android {
 
   buildTypes {
     release {
-      isCrunchPngs = false
-      isMinifyEnabled = false
+      isCrunchPngs = true
+      isMinifyEnabled = true
+      isShrinkResources = true
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
       signingConfig = signingConfigs.getByName("release")
     }

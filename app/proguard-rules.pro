@@ -1,21 +1,27 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Project ProGuard / R8 Optimization & Obfuscation Rules
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Optimization passes and aggressive optimizations
+-optimizationpasses 5
+-allowaccessmodification
+-repackageclasses 'o'
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Obfuscate source file names and preserve line numbers for de-obfuscation mapping
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Room Database persistence rules
+-keep class androidx.room.** { *; }
+-keep class * extends androidx.room.RoomDatabase
+-dontwarn androidx.room.paging.**
+-keep @androidx.room.Entity class * { *; }
+-keep class com.example.data.model.** { *; }
+-keep class com.example.data.local.** { *; }
+
+# Kotlin Coroutines & Reflection rules for safe obfuscation
+-keepclassmembers class kotlinx.coroutines.** {
+    volatile <fields>;
+}
+
+# Android Compose runtime
+-keep class androidx.compose.runtime.** { *; }
+
