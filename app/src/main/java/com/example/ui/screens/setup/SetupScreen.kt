@@ -72,9 +72,15 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.material3.Scaffold
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.data.util.Formatters
 import com.example.data.util.ImageStorageHelper
 import java.io.File
@@ -143,23 +149,30 @@ fun SetupScreen(
         }
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(horizontal = 16.dp, vertical = 20.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Card(
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        contentWindowInsets = WindowInsets.safeDrawing,
+        containerColor = MaterialTheme.colorScheme.background
+    ) { innerPadding ->
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState()),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface
-            ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-            shape = MaterialTheme.shapes.extraLarge
+                .fillMaxSize()
+                .padding(innerPadding)
+                .consumeWindowInsets(innerPadding)
+                .imePadding()
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            contentAlignment = Alignment.Center
         ) {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
+                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                shape = MaterialTheme.shapes.extraLarge
+            ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -275,7 +288,11 @@ fun SetupScreen(
                         val logoFile = selectedLogoPath?.let { File(it) }
                         if (logoFile != null && logoFile.exists()) {
                             AsyncImage(
-                                model = logoFile,
+                                model = ImageRequest.Builder(context)
+                                    .data(logoFile)
+                                    .crossfade(true)
+                                    .size(200, 200)
+                                    .build(),
                                 contentDescription = "Logo de la empresa seleccionado",
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
@@ -677,5 +694,6 @@ fun SetupScreen(
             }
         }
     }
+}
 }
 

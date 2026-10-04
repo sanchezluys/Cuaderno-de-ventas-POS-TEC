@@ -35,6 +35,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import androidx.compose.ui.platform.LocalContext
 import com.example.data.model.PerfilLocal
 import java.io.File
 
@@ -44,6 +46,7 @@ fun TopAppBarWithProfile(
     perfil: PerfilLocal?,
     onStoreInfoClick: () -> Unit
 ) {
+    val context = LocalContext.current
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.surface,
@@ -54,7 +57,11 @@ fun TopAppBarWithProfile(
                 val logoFile = perfil?.logoUri?.let { File(it) }
                 if (logoFile != null && logoFile.exists()) {
                     AsyncImage(
-                        model = logoFile,
+                        model = ImageRequest.Builder(context)
+                            .data(logoFile)
+                            .crossfade(true)
+                            .size(128, 128)
+                            .build(),
                         contentDescription = "Logo de la tienda",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier

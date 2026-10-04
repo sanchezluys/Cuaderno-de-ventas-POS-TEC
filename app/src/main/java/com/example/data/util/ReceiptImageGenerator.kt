@@ -27,7 +27,7 @@ object ReceiptImageGenerator {
     ): Bitmap {
         val width = 720
         val items = ventaConItems.items
-        val logoBitmap = ImageStorageHelper.loadBitmapFromPath(perfil?.logoUri)
+        val logoBitmap = ImageStorageHelper.loadBitmapFromPath(perfil?.logoUri, reqWidth = 160, reqHeight = 160)
         val hasLogo = logoBitmap != null
         val hasCustomer = !ventaConItems.venta.clienteNombre.isNullOrBlank()
 
@@ -134,6 +134,10 @@ object ReceiptImageGenerator {
             val logoBadgeRect = RectF(logoLeft - 8f, logoTop - 8f, logoLeft + logoW + 8f, logoTop + logoH + 8f)
             canvas.drawRoundRect(logoBadgeRect, 14f, 14f, logoBackingPaint)
             canvas.drawBitmap(scaledLogo, logoLeft, logoTop, null)
+            if (scaledLogo != logoBitmap) {
+                scaledLogo.recycle()
+            }
+            logoBitmap.recycle()
         }
 
         // Draw Header Content

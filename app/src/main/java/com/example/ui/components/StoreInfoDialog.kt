@@ -65,6 +65,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.BuildConfig
 import com.example.data.model.PerfilLocal
 import com.example.data.util.Formatters
@@ -131,7 +132,11 @@ fun StoreInfoDialog(
                 val logoFile = perfil?.logoUri?.let { File(it) }
                 if (logoFile != null && logoFile.exists()) {
                     AsyncImage(
-                        model = logoFile,
+                        model = ImageRequest.Builder(context)
+                            .data(logoFile)
+                            .crossfade(true)
+                            .size(96, 96)
+                            .build(),
                         contentDescription = "Logo",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
@@ -186,7 +191,11 @@ fun StoreInfoDialog(
                         val logoFile = perfil?.logoUri?.let { File(it) }
                         if (logoFile != null && logoFile.exists()) {
                             AsyncImage(
-                                model = logoFile,
+                                model = ImageRequest.Builder(context)
+                                    .data(logoFile)
+                                    .crossfade(true)
+                                    .size(192, 192)
+                                    .build(),
                                 contentDescription = "Logo del negocio",
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
